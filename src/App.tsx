@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { memo, Suspense } from "react";
+import { Provider } from "react-redux";
+import { renderRoutes } from "react-router-config";
 
-function App() {
+import routes from "./router";
+import store from "./store";
+
+import { HashRouter } from "react-router-dom";
+import ZTAppHeader from "./components/AppHeader";
+import ZTAppFooter from "./components/AppFooter";
+import ZTAppPlayerBar from "./pages/Player/AppPlayerBar";
+
+export default memo(function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <HashRouter>
+        <ZTAppHeader />
+        <Suspense fallback={<div>page loading</div>}>
+          {renderRoutes(routes)}
+        </Suspense>
+        <ZTAppFooter />
+        <ZTAppPlayerBar />
+      </HashRouter>
+    </Provider>
   );
-}
-
-export default App;
+});
